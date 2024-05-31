@@ -62,6 +62,7 @@ class AutoFusion(nn.Module):
             bbv = torch.mm(BV, torch.unsqueeze(V, dim=1)).squeeze(1)
         else: 
             bbv= None
+        print(a.shape, t.shape, v.shape)
         globalInput= torch.cat([tensor for tensor in (a,t,v) if tensor is not None])
         globalCompressed = self.fuse_inGlobal(globalInput) 
         globalLoss = self.criterion(self.fuse_outGlobal(globalCompressed), globalInput)
