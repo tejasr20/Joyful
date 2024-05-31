@@ -64,6 +64,7 @@ class Dataset:
                     losst += loss
                 elif self.modalities == "at":
                     output, loss = self.modelF(a, t)
+                    print(output.shape)
                     tmp.append(output)
                     losst += loss
                 elif self.modalities == "tv":
@@ -88,6 +89,7 @@ class Dataset:
                     losst += loss
 
             tmp = torch.stack(tmp)
+            print("Hoi", input_tensor.shape, np.array(tmp).shape)
             input_tensor[i, :cur_len, :] = tmp
             if self.dataset in ["meld", "dailydialog"]:
                 embed = torch.argmax(torch.tensor(s.speaker), dim=1)
