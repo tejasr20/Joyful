@@ -77,7 +77,7 @@ def main(args):
     log.info("Loaded data.")
 
     # modelF = AutoFusion(1380)
-    modelF= AutoFusion(args.dataset_embedding_dims[args.dataset][args.modalities])
+    modelF= AutoFusion(args.fusion_embedding_dims[args.dataset][args.modalities])
     # 1380 is 100 + 768 + 512 (atv modalities)
 
     trainset = joyful.Dataset(data["train"], modelF, True, args)
@@ -256,46 +256,46 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    # args.dataset_embedding_dims = { # seems incorrect 
-    #     "iemocap": {
-    #         "a": 50,
-    #         "t": 256,
-    #         "v": 256,
-    #         "at": 512,
-    #         "tv": 1024,
-    #         "av": 768,
-    #         "atv": 1024,
-    #     },
-    #     "iemocap_4": {
-    #         "a": 50,
-    #         "t": 256,
-    #         "v": 256,
-    #         "at": 512,
-    #         "tv": 1024,
-    #         "av": 768,
-    #         "atv": 1024,
-    #     },
-    #     "mosei": {
-    #         "a": 80,
-    #         "t": 768,
-    #         "v": 35,
-    #         "at": 80 + 768,
-    #         "tv": 768 + 35,
-    #         "av": 80 + 35,
-    #         "atv": 80 + 768 + 35,
-    #     },
-    #     "meld": {
-    #         "a": 100,
-    #         "t": 768,
-    #         "v": 512,
-    #         "at": 512,
-    #         "tv": 768 + 512,
-    #         "av": 612,
-    #         "atv": 768,
-    #     },
-    # }
+    args.dataset_embedding_dims = { # seems incorrect 
+        "iemocap": {
+            "a": 50,
+            "t": 256,
+            "v": 256,
+            "at": 512,
+            "tv": 1024,
+            "av": 768,
+            "atv": 1024,
+        },
+        "iemocap_4": {
+            "a": 50,
+            "t": 256,
+            "v": 256,
+            "at": 512,
+            "tv": 1024,
+            "av": 768,
+            "atv": 1024,
+        },
+        "mosei": {
+            "a": 80,
+            "t": 768,
+            "v": 35,
+            "at": 80 + 768,
+            "tv": 768 + 35,
+            "av": 80 + 35,
+            "atv": 80 + 768 + 35,
+        },
+        "meld": {
+            "a": 100,
+            "t": 768,
+            "v": 512,
+            "at": 512,
+            "tv": 768 + 512,
+            "av": 612,
+            "atv": 768,
+        },
+    }
     
-    args.dataset_embedding_dims = { # COGMEN
+    args.fusion_embedding_dims = { # COGMEN
         "iemocap": {
             "a": 100,
             "t": 768,
