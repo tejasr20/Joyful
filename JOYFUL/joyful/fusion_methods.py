@@ -63,17 +63,17 @@ class AutoFusion(nn.Module):
         else: 
             bbv= None
 
-        # globalCompressed = self.fuse_inGlobal(torch.cat((a, t, v)))
-        globalInput= torch.cat([tensor for tensor in (a,t,v) if tensor is not None])
-        globalCompressed = self.fuse_inGlobal(globalInput) 
-        globalLoss = self.criterion(self.fuse_outGlobal(globalCompressed), globalInput)
-        interInput = torch.cat([tensor for tensor in (bba, bbt, bbv) if tensor is not None])
-        interCompressed = self.fuse_inInter(interInput)
-        interLoss = self.criterion(self.fuse_outInter(interCompressed), interInput)
+        globalCompressed = self.fuse_inGlobal(torch.cat((a, t, v)))
+        # globalInput= torch.cat([tensor for tensor in (a,t,v) if tensor is not None])
+        # globalCompressed = self.fuse_inGlobal(globalInput) 
+        # globalLoss = self.criterion(self.fuse_outGlobal(globalCompressed), globalInput)
+        # interInput = torch.cat([tensor for tensor in (bba, bbt, bbv) if tensor is not None])
+        # interCompressed = self.fuse_inInter(interInput)
+        # interLoss = self.criterion(self.fuse_outInter(interCompressed), interInput)
     
-        # globalLoss = self.criterion(self.fuse_outGlobal(globalCompressed), torch.cat((a, t, v)))
-        # interCompressed = self.fuse_inInter(torch.cat((bba, bbt, bbv)))
-        # interLoss = self.criterion(self.fuse_outInter(interCompressed), torch.cat((bba, bbt, bbv)))
+        globalLoss = self.criterion(self.fuse_outGlobal(globalCompressed), torch.cat((a, t, v)))
+        interCompressed = self.fuse_inInter(torch.cat((bba, bbt, bbv)))
+        interLoss = self.criterion(self.fuse_outInter(interCompressed), torch.cat((bba, bbt, bbv)))
 
         loss = globalLoss + interLoss
 
