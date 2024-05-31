@@ -76,7 +76,8 @@ def main(args):
     data = joyful.utils.load_pkl(args.data)
     log.info("Loaded data.")
 
-    modelF = AutoFusion(1380)
+    # modelF = AutoFusion(1380)
+    modelF= AutoFusion(args.dataset_embedding_dims[args.dataset][args.modalities])
     # 1380 is 100 + 768 + 512 (atv modalities)
 
     trainset = joyful.Dataset(data["train"], modelF, True, args)
