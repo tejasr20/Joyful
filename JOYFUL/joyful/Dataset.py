@@ -59,7 +59,7 @@ class Dataset:
                 # this fusion module projects all modalities into a shared feature space from which we get input vectors. 
                 if self.modalities == "atv":
                     output, loss = self.modelF(a, t, v)
-                    print(output.shape)
+                    # print(output.shape)
                     tmp.append(output)
                     losst += loss
                 elif self.modalities == "at":
