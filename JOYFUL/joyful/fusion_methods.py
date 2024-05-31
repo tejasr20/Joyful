@@ -4,13 +4,14 @@ from torch.nn import functional as F
 
 
 class AutoFusion(nn.Module):
-    def __init__(self, input_features):
+    def __init__(self, model_input_features, fusion_input_features):
         super(AutoFusion, self).__init__()
-        self.input_features = input_features #passed as 1380 in JOYFUL
+        self.model_input_features = model_input_features #passed as 1380 in JOYFUL
+        self.fusion_input_features= fusion_input_features
         # now passing embedding dims as the input feature length. 
 
         self.fuse_inGlobal = nn.Sequential(
-            nn.Linear(input_features, 1024),
+            nn.Linear(model_input_features, 1024),
             nn.Tanh(),
             nn.Linear(1024, 512),
             nn.ReLU(),
@@ -18,11 +19,11 @@ class AutoFusion(nn.Module):
         self.fuse_outGlobal = nn.Sequential(
             nn.Linear(512, 1024),
             nn.Tanh(),
-            nn.Linear(1024, input_features)
+            nn.Linear(1024, model_input_features)
         )
 
         self.fuse_inInter = nn.Sequential(
-            nn.Linear(input_features, 1024),
+            nn.Linear(fusion_input_features, 1024),
             nn.Tanh(),
             nn.Linear(1024, 512),
             nn.ReLU(),
@@ -30,7 +31,7 @@ class AutoFusion(nn.Module):
         self.fuse_outInter = nn.Sequential(
             nn.Linear(512, 1024),
             nn.Tanh(),
-            nn.Linear(1024, input_features)
+            nn.Linear(1024, fusion_input_features)
         )
 
         self.criterion = nn.MSELoss()
@@ -43,10 +44,10 @@ class AutoFusion(nn.Module):
         )
 
     def forward(self, a=None, t=None, v=None):
-        B = self.projectB(torch.ones(460))
+        B = self.projectB(torch.ones(460)) #460 
         if a is not None:
-            A = self.projectA(a)
-            BA = torch.softmax(torch.mul((torch.unsqueeze(B, dim=1)), A), dim=1)
+            A = self.projectA(a) # 460 
+            BA = torch.softmax(torch.mul((torch.unsqueeze(B, dim=1)), A), dim=1)  
             bba = torch.mm(BA, torch.unsqueeze(A, dim=1)).squeeze(1)
         else: 
             bba= None
@@ -62,14 +63,14 @@ class AutoFusion(nn.Module):
             bbv = torch.mm(BV, torch.unsqueeze(V, dim=1)).squeeze(1)
         else: 
             bbv= None
-        print(a.shape, t.shape)
+        # print(a.shape, t.shape) #(100, 768)
         globalInput= torch.cat([tensor for tensor in (a,t,v) if tensor is not None])
-        print(globalInput.shape)
+        # print(globalInput.shape) # 868
         globalCompressed = self.fuse_inGlobal(globalInput) 
         globalLoss = self.criterion(self.fuse_outGlobal(globalCompressed), globalInput)
-        print(bba.shape, bbt.shape)
+        # print(bba.shape, bbt.shape) # (460, 460)
         interInput = torch.cat([tensor for tensor in (bba, bbt, bbv) if tensor is not None])
-        print(interInput.shape)
+        # print(interInput.shape) #920 
         interCompressed = self.fuse_inInter(interInput)
         interLoss = self.criterion(self.fuse_outInter(interCompressed), interInput)
     
