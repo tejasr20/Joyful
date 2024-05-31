@@ -128,14 +128,16 @@ class Coach:
         epoch_loss = 0
 
         self.model.train()
-        self.modelF.train()
+        self.modelF.train() # also training modelF
 
         self.trainset.shuffle()
         for idx in tqdm(range(len(self.trainset)), desc="train epoch {}".format(epoch)):
             self.model.zero_grad()
             self.modelF.zero_grad()
             data = self.trainset[idx]
-            encoderL = data['encoder_loss']
+            encoderL = data['encoder_loss'] # additional- use of encoder loss
+            #encoderL is added to model loss. 
+            # I suppose encoderL is loss part of fusion, model loss is part of GNN, and finally nll
             for k, v in data.items():
                 if not k == "utterance_texts":
                     data[k] = v.to(self.args.device)

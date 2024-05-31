@@ -77,6 +77,7 @@ def main(args):
     log.info("Loaded data.")
 
     modelF = AutoFusion(1380)
+    # 1380 is 100 + 768 + 512 (atv modalities)
 
     trainset = joyful.Dataset(data["train"], modelF, True, args)
     devset = joyful.Dataset(data["dev"], modelF, False, args)
@@ -254,7 +255,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    args.dataset_embedding_dims = {
+    args.dataset_embedding_dims = { # seems incorrect 
         "iemocap": {
             "a": 50,
             "t": 256,
@@ -292,4 +293,43 @@ if __name__ == "__main__":
             "atv": 768,
         },
     }
+    
+    # args.dataset_embedding_dims = { # COGMEN
+    #     "iemocap": {
+    #         "a": 100,
+    #         "t": 768,
+    #         "v": 512,
+    #         "at": 100 + 768,
+    #         "tv": 768 + 512,
+    #         "av": 612,
+    #         "atv": 100 + 768 + 512,
+    #     },
+    #     "iemocap_4": {
+    #         "a": 100,
+    #         "t": 768,
+    #         "v": 512,
+    #         "at": 100 + 768,
+    #         "tv": 768 + 512,
+    #         "av": 612,
+    #         "atv": 100 + 768 + 512,
+    #     },
+    #     "mosei": {
+    #         "a": 80,
+    #         "t": 768,
+    #         "v": 35,
+    #         "at": 80 + 768,
+    #         "tv": 768 + 35,
+    #         "av": 80 + 35,
+    #         "atv": 80 + 768 + 35,
+    #     },
+    #      "meld": {
+    #         "a": 300,
+    #         "t": 768, # will also go through SBert
+    #         "v": 342,
+    #         "at": 300 + 768,
+    #         "tv": 768 + 342,
+    #         "av": 642,
+    #         "atv": 300 + 768 + 342,
+    #     }
+    # }
     main(args)

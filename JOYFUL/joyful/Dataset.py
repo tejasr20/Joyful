@@ -9,6 +9,7 @@ from threading import current_thread
 
 class Dataset:
     def __init__(self, samples, modelF, WT, args) -> None:
+        # modelF is an additional argument 
         self.samples = samples
         self.modelF = modelF
         self.batch_size = args.batch_size
@@ -54,6 +55,8 @@ class Dataset:
                 t = torch.tensor(t, dtype=torch.float32)
                 a = torch.tensor(a, dtype=torch.float32)
                 v = torch.tensor(v, dtype=torch.float32)
+                # Instead of using simple concatanation(as torch.cat(a, v) like COGMEN) a fusion module is used(self.modelF())
+                # this fusion module projects all modalities into a shared feature space from which we get input vectors. 
                 if self.modalities == "atv":
                     output, loss = self.modelF(a, t, v)
                     tmp.append(output)
@@ -102,7 +105,7 @@ class Dataset:
             "speaker_tensor": speaker_tensor,
             "label_tensor": label_tensor,
             "utterance_texts": utterances,
-            "encoder_loss": losst
+            "encoder_loss": losst # extra element thats not in COGMEN
         }
         return data
 

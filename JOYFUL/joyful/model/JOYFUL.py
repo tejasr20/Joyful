@@ -101,7 +101,7 @@ class JOYFUL(nn.Module):
         return out
 
     def get_loss(self, data, whetherT):
-        graph_out, features, cl_loss = self.get_rep(data, whetherT)
+        graph_out, features, cl_loss = self.get_rep(data, whetherT) # cl loss extra from COGMEN
         if self.concat_gin_gout:
             loss = self.clf.get_loss(
                 torch.cat([features, graph_out], dim=-1),
