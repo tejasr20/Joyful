@@ -64,9 +64,12 @@ class AutoFusion(nn.Module):
             bbv= None
         print(a.shape, t.shape)
         globalInput= torch.cat([tensor for tensor in (a,t,v) if tensor is not None])
+        print(globalInput.shape)
         globalCompressed = self.fuse_inGlobal(globalInput) 
         globalLoss = self.criterion(self.fuse_outGlobal(globalCompressed), globalInput)
+        print(bba.shape, bbt.shape)
         interInput = torch.cat([tensor for tensor in (bba, bbt, bbv) if tensor is not None])
+        print(interInput.shape)
         interCompressed = self.fuse_inInter(interInput)
         interLoss = self.criterion(self.fuse_outInter(interCompressed), interInput)
     
