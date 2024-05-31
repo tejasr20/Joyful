@@ -15,7 +15,7 @@ class AutoFusion(nn.Module):
             nn.Linear(input_features_1, 1024),
             nn.Tanh(),
             # nn.Linear(1024, 512),
-            nn.Linear(1024, 512)
+            nn.Linear(1024, 512),
             nn.ReLU(),
         )
         self.fuse_outGlobal = nn.Sequential(
