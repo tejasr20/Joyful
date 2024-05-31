@@ -4,26 +4,28 @@ from torch.nn import functional as F
 
 
 class AutoFusion(nn.Module):
-    def __init__(self, model_input_features, fusion_input_features):
+    def __init__(self, input_features_1, input_features_2):
         super(AutoFusion, self).__init__()
-        self.model_input_features = model_input_features #passed as 1380 in JOYFUL
-        self.fusion_input_features= fusion_input_features
+        self.input_features_1 = input_features_1 #passed as 1380 in JOYFUL
+        # now passed from fusion_embedding_dims, ex 868 for "at" 
+        self.input_features_2= input_features_2
         # now passing embedding dims as the input feature length. 
 
         self.fuse_inGlobal = nn.Sequential(
-            nn.Linear(model_input_features, 1024),
+            nn.Linear(input_features_1, 1024),
             nn.Tanh(),
-            nn.Linear(1024, 512),
+            # nn.Linear(1024, 512),
+            nn.Linear(1024, 512)
             nn.ReLU(),
         )
         self.fuse_outGlobal = nn.Sequential(
             nn.Linear(512, 1024),
             nn.Tanh(),
-            nn.Linear(1024, model_input_features)
+            nn.Linear(1024, input_features_1)
         )
 
         self.fuse_inInter = nn.Sequential(
-            nn.Linear(fusion_input_features, 1024),
+            nn.Linear(input_features_2, 1024),
             nn.Tanh(),
             nn.Linear(1024, 512),
             nn.ReLU(),
@@ -31,7 +33,7 @@ class AutoFusion(nn.Module):
         self.fuse_outInter = nn.Sequential(
             nn.Linear(512, 1024),
             nn.Tanh(),
-            nn.Linear(1024, fusion_input_features)
+            nn.Linear(1024, input_features_2)
         )
 
         self.criterion = nn.MSELoss()

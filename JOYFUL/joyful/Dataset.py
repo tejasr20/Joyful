@@ -22,7 +22,8 @@ class Dataset:
         else:
             self.modelF.eval()
 
-        self.embedding_dim = args.dataset_embedding_dims[args.dataset][args.modalities]
+        # self.embedding_dim = args.dataset_embedding_dims[args.dataset][args.modalities]
+        self.embedding_dim= 1024
 
     def __len__(self):
         return self.num_batches
