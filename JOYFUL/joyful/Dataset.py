@@ -89,7 +89,7 @@ class Dataset:
                     losst += loss
 
             tmp = torch.stack(tmp)
-            print("Hoi", input_tensor.shape, np.array(tmp).shape)
+            print("Hoi", input_tensor.shape)
             input_tensor[i, :cur_len, :] = tmp
             if self.dataset in ["meld", "dailydialog"]:
                 embed = torch.argmax(torch.tensor(s.speaker), dim=1)
