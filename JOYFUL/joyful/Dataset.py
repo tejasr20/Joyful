@@ -66,28 +66,28 @@ class Dataset:
                     tmp.append(output)
                     losst += loss
                 elif self.modalities == "at":
-                    output, loss = self.modelF(a, t)
+                    output, loss = self.modelF(a, t, None)
                     # print(output.shape)
                     tmp.append(output)
                     losst += loss
                 elif self.modalities == "tv":
-                    output, loss = self.modelF(t, v)
+                    output, loss = self.modelF(None, t, v)
                     tmp.append(output)
                     losst += loss
                 elif self.modalities == "av":
-                    output, loss = self.modelF(a, v)
+                    output, loss = self.modelF(a, None, v)
                     tmp.append(output)
                     losst += loss
                 elif self.modalities == "a":
-                    output, loss = self.modelF(a)
+                    output, loss = self.modelF(a, None, None)
                     tmp.append(output.squeeze(0))
                     losst += loss
                 elif self.modalities == "t":
-                    output, loss = self.modelF(t)
+                    output, loss = self.modelF(None, t, None)
                     tmp.append(output.squeeze(0))
                     losst += loss
                 elif self.modalities == "v":
-                    output, loss = self.modelF(v)
+                    output, loss = self.modelF(None, None, v)
                     tmp.append(output.squeeze(0))
                     losst += loss
 
