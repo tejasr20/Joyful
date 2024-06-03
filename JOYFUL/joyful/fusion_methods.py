@@ -38,9 +38,11 @@ class AutoFusion(nn.Module):
 
         self.criterion = nn.MSELoss()
 
-        self.projectA = nn.Linear(100, 460)
+        self.projectA = nn.Linear(100, 460) # these three are the fg(a), fg(t) and fg(v) mentioned? 
         self.projectT = nn.Linear(768, 460)
         self.projectV = nn.Linear(512, 460)
+        # Shared latent space and the projections give us zg_{a,t,v}
+        # these numbers are again iemocap specific. These embedding dimensions will NOT work for other datasets. 
         self.projectB = nn.Sequential(
             nn.Linear(460, 460),
         )
@@ -83,8 +85,9 @@ class AutoFusion(nn.Module):
         # interLoss = self.criterion(self.fuse_outInter(interCompressed), torch.cat((bba, bbt, bbv)))
 
         loss = globalLoss + interLoss
-
         return torch.cat((globalCompressed, interCompressed), 0), loss
+		# This vector that is returned should be of size 1024 irrespective
+		# of modality since it is two 512 dim vectors concatanated. 
     
     # def forward1(self, a=None, t=None, v=None):
     #     B = self.projectB(torch.ones(460))

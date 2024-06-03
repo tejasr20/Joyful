@@ -134,7 +134,7 @@ class Coach:
         for idx in tqdm(range(len(self.trainset)), desc="train epoch {}".format(epoch)):
             self.model.zero_grad()
             self.modelF.zero_grad()
-            data = self.trainset[idx]
+            data = self.trainset[idx] 
             encoderL = data['encoder_loss'] # additional- use of encoder loss
             #encoderL is added to model loss. 
             # I suppose encoderL is loss part of fusion, model loss is part of GNN, and finally nll

@@ -203,6 +203,8 @@ if __name__ == "__main__":
         choices=["lstm", "gru", "transformer"],
         help="Type of RNN cell.",
     )
+    # The default type of rnn cell is transformer. 
+    # So when self.rnn() is done thats actually a transformer layer. 
     parser.add_argument(
         "--class_weight",
         action="store_true",

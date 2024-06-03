@@ -12,7 +12,9 @@ class SeqContext(nn.Module):
         self.dropout = nn.Dropout(args.drop_rate)
         self.args = args
 
-        self.input_size = args.dataset_embedding_dims[args.dataset][args.modalities]
+        # self.input_size = args.dataset_embedding_dims[args.dataset][args.modalities]
+        self.input_size= 1024 # this is fixed according to new formulation. 
+        # self.input size is used in the transformer layer. 
         self.nhead = 1
         for h in range(7, 15):
             if self.input_size % h == 0:
@@ -22,7 +24,7 @@ class SeqContext(nn.Module):
         self.encoding_layer = nn.Embedding(110, self.input_size)
         self.LayerNorm = nn.LayerNorm(self.input_size)
 
-        self.use_transformer = False
+        self.use_transformer = False # This is true in default settings. 
         if args.rnn == "lstm":
             print("SeqContext-> USING LSTM")
             self.rnn = nn.LSTM(
@@ -61,6 +63,7 @@ class SeqContext(nn.Module):
             print("args.drop_rate:", args.drop_rate)
 
     def forward(self, text_len_tensor, text_tensor):
+        # This is called on data["text_len_tensor"], data["input_tensor"]
         if self.use_transformer:
             rnn_out = self.transformer_encoder(text_tensor)
             rnn_out = self.transformer_out(rnn_out)

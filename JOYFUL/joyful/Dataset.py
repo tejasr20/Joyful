@@ -41,6 +41,8 @@ class Dataset:
     def padding(self, samples):
         batch_size = len(samples)
         text_len_tensor = torch.tensor([len(s.text) for s in samples]).long()
+        # I guess we choose max= mx as the maximum length dialogue in 
+        # terms of utterances in our current batch, and use that as padding. 
         mx = torch.max(text_len_tensor).item()
 
         input_tensor = torch.zeros((batch_size, mx, self.embedding_dim))
@@ -90,7 +92,9 @@ class Dataset:
                     losst += loss
 
             tmp = torch.stack(tmp)
-            print("Hoi", input_tensor.shape)
+            # print("Hoi", input_tensor.shape)
+            # [12, 66, 1024]): (batch_size, mx, self.embedding_dim) 
+            # first two are variable while training. 
             input_tensor[i, :cur_len, :] = tmp
             if self.dataset in ["meld", "dailydialog"]:
                 embed = torch.argmax(torch.tensor(s.speaker), dim=1)
@@ -104,8 +108,8 @@ class Dataset:
 
         label_tensor = torch.tensor(labels).long()
         data = {
-            "text_len_tensor": text_len_tensor,
-            "input_tensor": input_tensor,
+            "text_len_tensor": text_len_tensor, # this is essentially lengths of each dialogue in a batch. 
+            "input_tensor": input_tensor, # I suppose this is the input to the transformer layer post fusion, 
             "speaker_tensor": speaker_tensor,
             "label_tensor": label_tensor,
             "utterance_texts": utterances,

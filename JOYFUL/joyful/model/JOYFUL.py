@@ -73,6 +73,7 @@ class JOYFUL(nn.Module):
         log.debug(self.edge_type_to_idx)
 
     def get_rep(self, data=None, whetherT=None):
+        #self.rnn runs a forward pass on the transformer layer 
         node_features = self.rnn(data["text_len_tensor"], data["input_tensor"])
 
 
@@ -101,6 +102,7 @@ class JOYFUL(nn.Module):
         return out
 
     def get_loss(self, data, whetherT):
+        # this essentially creates the graph: 2 forms and returns the GNN output, the features and the loss. 
         graph_out, features, cl_loss = self.get_rep(data, whetherT) # cl loss extra from COGMEN
         if self.concat_gin_gout:
             loss = self.clf.get_loss(
