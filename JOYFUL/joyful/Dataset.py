@@ -67,7 +67,7 @@ class Dataset:
                     losst += loss
                 elif self.modalities == "at":
                     output, loss = self.modelF(a, t)
-                    print(output.shape)
+                    # print(output.shape)
                     tmp.append(output)
                     losst += loss
                 elif self.modalities == "tv":
