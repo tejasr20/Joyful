@@ -4,7 +4,7 @@ from torch.nn import functional as F
 
 
 class AutoFusion(nn.Module):
-    def __init__(self, input_features_1, input_features_2):
+    def __init__(self, args, input_features_1, input_features_2):
         super(AutoFusion, self).__init__()
         self.input_features_1 = input_features_1 #passed as 1380 in JOYFUL
         # now passed from fusion_embedding_dims, ex 868 for "at" 
@@ -38,9 +38,12 @@ class AutoFusion(nn.Module):
 
         self.criterion = nn.MSELoss()
 
-        self.projectA = nn.Linear(100, 460) # these three are the fg(a), fg(t) and fg(v) mentioned? 
-        self.projectT = nn.Linear(768, 460)
-        self.projectV = nn.Linear(512, 460)
+        # self.projectA = nn.Linear(100, 460) # these three are the fg(a), fg(t) and fg(v) mentioned? 
+        # self.projectT = nn.Linear(768, 460)
+        # self.projectV = nn.Linear(512, 460)
+        self.projectA= nn.Linear(args.fusion_embedding_dims[args.dataset]["a"], 460)
+        self.projectT= nn.Linear(args.fusion_embedding_dims[args.dataset]["t"], 460)
+        self.projectV= nn.Linear(args.fusion_embedding_dims[args.dataset]["v"], 460)
         # Shared latent space and the projections give us zg_{a,t,v}
         # these numbers are again iemocap specific. These embedding dimensions will NOT work for other datasets. 
         self.projectB = nn.Sequential(

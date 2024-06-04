@@ -77,7 +77,7 @@ def main(args):
     log.info("Loaded data.")
 
     # modelF = AutoFusion(1380)
-    modelF= AutoFusion(args.fusion_embedding_dims[args.dataset][args.modalities], 460*len(args.modalities))
+    modelF= AutoFusion(args, args.fusion_embedding_dims[args.dataset][args.modalities], 460*len(args.modalities))
     # 1380 is 100 + 768 + 512 (atv modalities)
 
     trainset = joyful.Dataset(data["train"], modelF, True, args)
