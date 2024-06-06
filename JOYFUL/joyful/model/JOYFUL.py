@@ -25,7 +25,8 @@ class JOYFUL(nn.Module):
             "iemocap": {"hap": 0, "sad": 1, "neu": 2, "ang": 3, "exc": 4, "fru": 5},
             "iemocap_4": {"hap": 0, "sad": 1, "neu": 2, "ang": 3},
             "mosei": {"Negative": 0, "Positive": 1},
-            "meld": {"Neutral": 0, "Surprise": 1, "Fear": 2, "Sadness": 3, "Joy": 4, "Disgust": 5, "Angry": 6}
+            # "meld": {"Neutral": 0, "Surprise": 1, "Fear": 2, "Sadness": 3, "Joy": 4, "Disgust": 5, "Angry": 6}
+            "meld": {'neutral': 0, 'surprise': 1, 'fear': 2, 'sadness': 3, 'joy': 4, 'disgust': 5, 'anger': 6},
         }
 
         dataset_speaker_dict = {
