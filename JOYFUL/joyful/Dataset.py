@@ -97,8 +97,10 @@ class Dataset:
             # first two are variable while training. 
             input_tensor[i, :cur_len, :] = tmp
             if self.dataset in ["meld", "dailydialog"]:
-                embed = torch.argmax(torch.tensor(s.speaker), dim=0)
-                speaker_tensor[i, :cur_len] = embed
+                # embed = torch.argmax(torch.tensor(s.speaker), dim=0)
+                # why is it doing an argmax here? 
+                speaker_tensor[i, :cur_len] = torch.tensor([s.speaker])
+                # speaker_tensor[i, :cur_len] = embed
             else:
                 speaker_tensor[i, :cur_len] = torch.tensor(
                     [self.speaker_to_idx[c] for c in s.speaker]
