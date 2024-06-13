@@ -26,7 +26,8 @@ class Coach:
             "iemocap": {"hap": 0, "sad": 1, "neu": 2, "ang": 3, "exc": 4, "fru": 5},
             "iemocap_4": {"hap": 0, "sad": 1, "neu": 2, "ang": 3},
             "mosei": {"Negative": 0, "Positive": 1},
-            "meld": {"Neutral": 0, "Surprise": 1, "Fear": 2, "Sadness": 3, "Joy": 4, "Disgust": 5, "Angry": 6}
+            # "meld": {"Neutral": 0, "Surprise": 1, "Fear": 2, "Sadness": 3, "Joy": 4, "Disgust": 5, "Angry": 6}
+			 "meld": {'neutral': 0, 'surprise': 1, 'fear': 2, 'sadness': 3, 'joy': 4, 'disgust': 5, 'anger': 6}
         }
 
         if args.dataset and args.emotion == "multilabel":
@@ -119,6 +120,13 @@ class Coach:
             self.args.experiment.log_metric("best_test_f1", best_test_f1, epoch=epoch)
 
             return best_dev_f1, best_epoch, best_state, train_losses, dev_f1s, test_f1s
+        self.model.load_state_dict(best_state)
+        log.info("")
+        log.info("Best in epoch {}:".format(best_epoch))
+        dev_f1, _ = self.evaluate()
+        log.info("[Dev set] [f1 {:.4f}]".format(dev_f1))
+        test_f1, _ = self.evaluate(test=True)
+        log.info("[Test set] f1 {}".format(test_f1))
 
 
         return best_dev_f1, best_epoch, best_state, train_losses, dev_f1s, test_f1s
